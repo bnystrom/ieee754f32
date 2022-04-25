@@ -19,8 +19,8 @@ function decodef32( inArr ){
 
   let expStr = target.substring(0,8);
   //console.log(`expStr: ${expStr}`);
-
-  let bias = parseInt(expStr,2) - 127;
+  let exp = parseInt(expStr,2);
+  let bias = exp - 127;
   //console.log(`bias: ${bias}`);
 
   tarArr = tarArr.slice(8);
@@ -37,6 +37,27 @@ function decodef32( inArr ){
 
   //console.log(`x: ${x}`);
 
-  let ret = (1 + x) * (2 ** bias) * sign;
-  return ret;
+  let retVal;
+  if (exp == 0){
+    // Exponental is all zeros
+    if (x == 0){
+    // and Fractional is all zeros
+    // Special Zero Rule
+    retVal = 0;
+    }else {
+      // Exponential is all zeros but there is a Fractional value
+      // Special Denormalized Rule
+      // .. Don't add the leading 1
+      retVal = x * (2 ** bias) * sign;
+    }
+  }else{
+    // Normal operation
+    retVal = (1 + x) * (2 ** bias) * sign;
+  }
+
+  return retVal;
 }
+
+let inArr = [0,0];
+
+//console.log(decodef32(inArr));
