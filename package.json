@@ -1,5 +1,5 @@
 {
-  "name": "ieee754",
+  "name": "ieee754f32",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
